@@ -4,6 +4,7 @@ import com.orbit.backend.dto.RegisterRequest;
 import com.orbit.backend.service.AuthService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import com.orbit.backend.dto.LoginRequest;
 
 import java.util.Map;
 
@@ -30,6 +31,23 @@ public class AuthController {
         return Map.of(
                 "message",
                 "User registered successfully"
+        );
+    }
+
+    @PostMapping("/login")
+    public Map<String, String> login(
+            @RequestBody LoginRequest request
+    ) {
+        String token = authService.login(
+                request.getEmail(),
+                request.getPassword()
+        );
+
+        return Map.of(
+                "token",
+                token,
+                "tokenType",
+                "Bearer"
         );
     }
 }
