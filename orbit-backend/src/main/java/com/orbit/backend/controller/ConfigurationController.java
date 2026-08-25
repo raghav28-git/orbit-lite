@@ -12,6 +12,7 @@ import java.util.List;
 import com.orbit.backend.dto.RuntimeConfigurationResponse;
 import com.orbit.backend.dto.ConfigurationVersionResponse;
 import java.util.List;
+import com.orbit.backend.dto.RollbackConfigurationRequest;
 
 @RestController
 @RequestMapping(
@@ -109,5 +110,24 @@ public List<ConfigurationVersionResponse> getConfigurationVersions(
     );
 }
 
-        
+@PostMapping("/{configurationId}/rollback")
+public ConfigurationResponse rollbackConfiguration(
+        @PathVariable Long projectId,
+        @PathVariable Long environmentId,
+        @PathVariable Long configurationId,
+        @RequestBody RollbackConfigurationRequest request,
+        Authentication authentication
+) {
+    Configuration configuration =
+            configurationService.rollbackConfiguration(
+                    projectId,
+                    environmentId,
+                    configurationId,
+                    request,
+                    authentication.getName()
+            );
+
+    return ConfigurationResponse.from(configuration);
+}
+
 }

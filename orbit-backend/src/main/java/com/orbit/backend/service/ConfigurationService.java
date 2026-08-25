@@ -20,6 +20,7 @@ import com.orbit.backend.entity.ConfigurationVersion;
 import java.util.Map;
 import java.util.stream.Collectors;
 import com.orbit.backend.dto.ConfigurationVersionResponse;
+import com.orbit.backend.dto.RollbackConfigurationRequest;
 
 @Service
 public class ConfigurationService {
@@ -224,4 +225,67 @@ public List<ConfigurationVersionResponse> getConfigurationVersions(
             .toList();
 }
         
+        public Configuration rollbackConfiguration(
+        Long projectId,
+        Long environmentId,
+        Long configurationId,
+        RollbackConfigurationRequest request,
+        String userEmail
+) {
+    User owner = getUser(userEmail);
+
+    Project project = projectRepository
+            .findByIdAndOwner(projectId, owner)
+            .orElseThrow(() ->
+                    new IllegalArgumentException("Project not found")
+            );
+
+    Environment environment = environmentRepository
+            .findByIdAndProject(environmentId, project)
+            .orElseThrow(() ->
+                    new IllegalArgumentException("Environment not found")
+            );
+
+    Configuration configuration = configurationRepository
+            .findByIdAndEnvironment(configurationId, environment)
+            .orElseThrow(() ->
+                    new IllegalArgumentException("Configuration not found")
+            );
+
+    ConfigurationVersion targetVersion =
+            configurationVersionRepository
+                    .findByConfigurationAndVersion(
+                            configuration,
+                            request.getVersion()
+                    )
+                    .orElseThrow(() ->
+                            new IllegalArgumentException(
+                                    "Configuration version not found"
+                            )
+                    );
+
+    ConfigurationVersion latestVersion =
+            configurationVersionRepository
+                    .findTopByConfigurationOrderByVersionDesc(configuration)
+                    .orElse(null);
+
+    int nextVersion = latestVersion == null
+            ? 1
+            : latestVersion.getVersion() + 1;
+
+    ConfigurationVersion rollbackVersion =
+            new ConfigurationVersion(
+                    configuration,
+                    nextVersion,
+                    targetVersion.getValue(),
+                    LocalDateTime.now()
+            );
+
+    configurationVersionRepository.save(rollbackVersion);
+
+    configuration.setValue(targetVersion.getValue());
+    configuration.setUpdatedAt(LocalDateTime.now());
+
+    return configurationRepository.save(configuration);
+}
 }

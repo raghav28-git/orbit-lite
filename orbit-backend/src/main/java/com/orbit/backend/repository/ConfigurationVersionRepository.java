@@ -17,4 +17,9 @@ public interface ConfigurationVersionRepository
     Optional<ConfigurationVersion> findTopByConfigurationOrderByVersionDesc(
             Configuration configuration
     );
+
+    Optional<ConfigurationVersion> findByConfigurationAndVersion(
+        Configuration configuration,
+        Integer version
+    );
 }
