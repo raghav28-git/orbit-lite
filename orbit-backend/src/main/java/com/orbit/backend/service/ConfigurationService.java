@@ -13,6 +13,11 @@ import org.springframework.stereotype.Service;
 import com.orbit.backend.dto.UpdateConfigurationRequest;
 import java.time.LocalDateTime;
 import java.util.List;
+import com.orbit.backend.dto.RuntimeConfigurationResponse;
+import com.orbit.backend.dto.RuntimeConfigurationResponse;
+
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class ConfigurationService {
@@ -125,5 +130,39 @@ public class ConfigurationService {
     configuration.setUpdatedAt(LocalDateTime.now());
 
     return configurationRepository.save(configuration);
+}
+
+public RuntimeConfigurationResponse getRuntimeConfiguration(
+        Long projectId,
+        Long environmentId,
+        String userEmail
+) {
+    User owner = getUser(userEmail);
+
+    Project project = projectRepository
+            .findByIdAndOwner(projectId, owner)
+            .orElseThrow(() ->
+                    new IllegalArgumentException("Project not found")
+            );
+
+    Environment environment = environmentRepository
+            .findByIdAndProject(environmentId, project)
+            .orElseThrow(() ->
+                    new IllegalArgumentException("Environment not found")
+            );
+
+    Map<String, String> configurations =
+            configurationRepository
+                    .findAllByEnvironment(environment)
+                    .stream()
+                    .collect(Collectors.toMap(
+                            Configuration::getKey,
+                            Configuration::getValue
+                    ));
+
+    return new RuntimeConfigurationResponse(
+            environmentId,
+            configurations
+    );
 }
 }

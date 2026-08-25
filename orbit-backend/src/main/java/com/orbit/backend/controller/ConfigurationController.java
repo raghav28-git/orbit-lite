@@ -9,6 +9,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import com.orbit.backend.dto.UpdateConfigurationRequest;
 import java.util.List;
+import com.orbit.backend.dto.RuntimeConfigurationResponse;
 
 @RestController
 @RequestMapping(
@@ -59,23 +60,36 @@ public class ConfigurationController {
                 .map(ConfigurationResponse::from)
                 .toList();
     }
-    @PutMapping("/{configurationId}")
-public ConfigurationResponse updateConfiguration(
-        @PathVariable Long projectId,
-        @PathVariable Long environmentId,
-        @PathVariable Long configurationId,
-        @RequestBody UpdateConfigurationRequest request,
-        Authentication authentication
-) {
-    Configuration configuration =
-            configurationService.updateConfiguration(
-                    projectId,
-                    environmentId,
-                    configurationId,
-                    request,
-                    authentication.getName()
-            );
+        @PutMapping("/{configurationId}")
+        public ConfigurationResponse updateConfiguration(
+                @PathVariable Long projectId,
+                @PathVariable Long environmentId,
+                @PathVariable Long configurationId,
+                @RequestBody UpdateConfigurationRequest request,
+                Authentication authentication
+        ) {
+        Configuration configuration =
+                configurationService.updateConfiguration(
+                        projectId,
+                        environmentId,
+                        configurationId,
+                        request,
+                        authentication.getName()
+                );
 
-    return ConfigurationResponse.from(configuration);
-}
+        return ConfigurationResponse.from(configuration);
+        }
+        @GetMapping("/runtime")
+        public RuntimeConfigurationResponse getRuntimeConfiguration(
+                @PathVariable Long projectId,
+                @PathVariable Long environmentId,
+                Authentication authentication
+        ) {
+        return configurationService.getRuntimeConfiguration(
+                projectId,
+                environmentId,
+                authentication.getName()
+        );
+        }
+        
 }
