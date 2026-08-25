@@ -24,18 +24,21 @@ public class EnvironmentApiKeyService {
     private final EnvironmentRepository environmentRepository;
     private final ProjectRepository projectRepository;
     private final UserRepository userRepository;
+    private final AuditLogService auditLogService;
 
-    public EnvironmentApiKeyService(
-            EnvironmentApiKeyRepository apiKeyRepository,
-            EnvironmentRepository environmentRepository,
-            ProjectRepository projectRepository,
-            UserRepository userRepository
-    ) {
-        this.apiKeyRepository = apiKeyRepository;
-        this.environmentRepository = environmentRepository;
-        this.projectRepository = projectRepository;
-        this.userRepository = userRepository;
-    }
+public EnvironmentApiKeyService(
+        EnvironmentApiKeyRepository apiKeyRepository,
+        EnvironmentRepository environmentRepository,
+        ProjectRepository projectRepository,
+        UserRepository userRepository,
+        AuditLogService auditLogService
+) {
+    this.apiKeyRepository = apiKeyRepository;
+    this.environmentRepository = environmentRepository;
+    this.projectRepository = projectRepository;
+    this.userRepository = userRepository;
+    this.auditLogService = auditLogService;
+}
 
     public String generateApiKey(
             Long projectId,
@@ -71,6 +74,15 @@ public class EnvironmentApiKeyService {
         );
 
         apiKeyRepository.save(apiKey);
+        
+        auditLogService.log(
+        userEmail,
+        environment,
+        "CREATE_API_KEY",
+        "API_KEY",
+        apiKey.getId(),
+        "Created environment API key"
+);
 
         return rawKey;
     }
@@ -155,5 +167,14 @@ public class EnvironmentApiKeyService {
     apiKey.setRevokedAt(LocalDateTime.now());
 
     apiKeyRepository.save(apiKey);
+
+    auditLogService.log(
+        userEmail,
+        environment,
+        "REVOKE_API_KEY",
+        "API_KEY",
+        apiKey.getId(),
+        "Revoked environment API key"
+);
 }
 }

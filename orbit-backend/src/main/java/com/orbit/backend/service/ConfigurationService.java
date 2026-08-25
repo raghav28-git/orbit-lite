@@ -24,6 +24,7 @@ import com.orbit.backend.dto.RollbackConfigurationRequest;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.CacheEvict;
 
+
 @Service
 public class ConfigurationService {
 
@@ -32,19 +33,22 @@ private final EnvironmentRepository environmentRepository;
 private final ProjectRepository projectRepository;
 private final UserRepository userRepository;
 private final ConfigurationVersionRepository configurationVersionRepository;
+private final AuditLogService auditLogService;
 
 public ConfigurationService(
         ConfigurationRepository configurationRepository,
         EnvironmentRepository environmentRepository,
         ProjectRepository projectRepository,
         UserRepository userRepository,
-        ConfigurationVersionRepository configurationVersionRepository
+        ConfigurationVersionRepository configurationVersionRepository,
+        AuditLogService auditLogService
 ) {
     this.configurationRepository = configurationRepository;
     this.environmentRepository = environmentRepository;
     this.projectRepository = projectRepository;
     this.userRepository = userRepository;
     this.configurationVersionRepository = configurationVersionRepository;
+    this.auditLogService = auditLogService;
 }
 
     @CacheEvict(
@@ -79,7 +83,19 @@ public ConfigurationService(
                 LocalDateTime.now()
         );
 
-        return configurationRepository.save(configuration);
+        Configuration savedConfiguration =
+        configurationRepository.save(configuration);
+
+auditLogService.log(
+        userEmail,
+        environment,
+        "CREATE_CONFIGURATION",
+        "CONFIGURATION",
+        savedConfiguration.getId(),
+        "Created configuration: " + savedConfiguration.getKey()
+);
+
+return savedConfiguration;
     }
 
     public List<Configuration> getConfigurations(
@@ -163,7 +179,22 @@ configurationVersionRepository.save(version);
 configuration.setValue(request.getValue());
 configuration.setUpdatedAt(LocalDateTime.now());
 
-return configurationRepository.save(configuration);
+configuration.setValue(request.getValue());
+configuration.setUpdatedAt(LocalDateTime.now());
+
+Configuration savedConfiguration =
+        configurationRepository.save(configuration);
+
+auditLogService.log(
+        userEmail,
+        environment,
+        "UPDATE_CONFIGURATION",
+        "CONFIGURATION",
+        savedConfiguration.getId(),
+        "Updated configuration: " + savedConfiguration.getKey()
+);
+
+return savedConfiguration;
 }
 
 @Cacheable(
@@ -303,9 +334,9 @@ public List<ConfigurationVersionResponse> getConfigurationVersions(
     configurationVersionRepository.save(rollbackVersion);
 
     configuration.setValue(targetVersion.getValue());
-    configuration.setUpdatedAt(LocalDateTime.now());
+configuration.setUpdatedAt(LocalDateTime.now());
 
-    return configurationRepository.save(configuration);
+return configurationRepository.save(configuration);
 }
 
 public RuntimeConfigurationResponse getRuntimeConfiguration(
