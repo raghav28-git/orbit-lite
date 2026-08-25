@@ -307,4 +307,22 @@ public List<ConfigurationVersionResponse> getConfigurationVersions(
 
     return configurationRepository.save(configuration);
 }
+
+public RuntimeConfigurationResponse getRuntimeConfiguration(
+        Environment environment
+) {
+    Map<String, String> configurations =
+            configurationRepository
+                    .findAllByEnvironment(environment)
+                    .stream()
+                    .collect(Collectors.toMap(
+                            Configuration::getKey,
+                            Configuration::getValue
+                    ));
+
+    return new RuntimeConfigurationResponse(
+            environment.getId(),
+            configurations
+    );
+}
 }
