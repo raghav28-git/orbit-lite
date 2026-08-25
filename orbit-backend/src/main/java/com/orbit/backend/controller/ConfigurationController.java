@@ -7,7 +7,7 @@ import com.orbit.backend.service.ConfigurationService;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
-
+import com.orbit.backend.dto.UpdateConfigurationRequest;
 import java.util.List;
 
 @RestController
@@ -59,4 +59,23 @@ public class ConfigurationController {
                 .map(ConfigurationResponse::from)
                 .toList();
     }
+    @PutMapping("/{configurationId}")
+public ConfigurationResponse updateConfiguration(
+        @PathVariable Long projectId,
+        @PathVariable Long environmentId,
+        @PathVariable Long configurationId,
+        @RequestBody UpdateConfigurationRequest request,
+        Authentication authentication
+) {
+    Configuration configuration =
+            configurationService.updateConfiguration(
+                    projectId,
+                    environmentId,
+                    configurationId,
+                    request,
+                    authentication.getName()
+            );
+
+    return ConfigurationResponse.from(configuration);
+}
 }

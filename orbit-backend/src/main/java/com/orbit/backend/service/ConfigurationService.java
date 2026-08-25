@@ -10,7 +10,7 @@ import com.orbit.backend.repository.EnvironmentRepository;
 import com.orbit.backend.repository.ProjectRepository;
 import com.orbit.backend.repository.UserRepository;
 import org.springframework.stereotype.Service;
-
+import com.orbit.backend.dto.UpdateConfigurationRequest;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -94,4 +94,36 @@ public class ConfigurationService {
                         new IllegalArgumentException("User not found")
                 );
     }
+    public Configuration updateConfiguration(
+        Long projectId,
+        Long environmentId,
+        Long configurationId,
+        UpdateConfigurationRequest request,
+        String userEmail
+) {
+    User owner = getUser(userEmail);
+
+    Project project = projectRepository
+            .findByIdAndOwner(projectId, owner)
+            .orElseThrow(() ->
+                    new IllegalArgumentException("Project not found")
+            );
+
+    Environment environment = environmentRepository
+            .findByIdAndProject(environmentId, project)
+            .orElseThrow(() ->
+                    new IllegalArgumentException("Environment not found")
+            );
+
+    Configuration configuration = configurationRepository
+            .findByIdAndEnvironment(configurationId, environment)
+            .orElseThrow(() ->
+                    new IllegalArgumentException("Configuration not found")
+            );
+
+    configuration.setValue(request.getValue());
+    configuration.setUpdatedAt(LocalDateTime.now());
+
+    return configurationRepository.save(configuration);
+}
 }
