@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.*;
 import com.orbit.backend.dto.UpdateConfigurationRequest;
 import java.util.List;
 import com.orbit.backend.dto.RuntimeConfigurationResponse;
+import com.orbit.backend.dto.ConfigurationVersionResponse;
+import java.util.List;
 
 @RestController
 @RequestMapping(
@@ -91,5 +93,21 @@ public class ConfigurationController {
                 authentication.getName()
         );
         }
+
+        @GetMapping("/{configurationId}/versions")
+public List<ConfigurationVersionResponse> getConfigurationVersions(
+        @PathVariable Long projectId,
+        @PathVariable Long environmentId,
+        @PathVariable Long configurationId,
+        Authentication authentication
+) {
+    return configurationService.getConfigurationVersions(
+            projectId,
+            environmentId,
+            configurationId,
+            authentication.getName()
+    );
+}
+
         
 }
