@@ -21,6 +21,8 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import com.orbit.backend.dto.ConfigurationVersionResponse;
 import com.orbit.backend.dto.RollbackConfigurationRequest;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.CacheEvict;
 
 @Service
 public class ConfigurationService {
@@ -45,6 +47,10 @@ public ConfigurationService(
     this.configurationVersionRepository = configurationVersionRepository;
 }
 
+    @CacheEvict(
+        value = "runtimeConfigurations",
+        key = "#projectId + ':' + #environmentId"
+    )
     public Configuration createConfiguration(
             Long projectId,
             Long environmentId,
@@ -105,6 +111,11 @@ public ConfigurationService(
                         new IllegalArgumentException("User not found")
                 );
     }
+
+    @CacheEvict(
+        value = "runtimeConfigurations",
+        key = "#projectId + ':' + #environmentId"
+    )
     public Configuration updateConfiguration(
         Long projectId,
         Long environmentId,
@@ -155,6 +166,10 @@ configuration.setUpdatedAt(LocalDateTime.now());
 return configurationRepository.save(configuration);
 }
 
+@Cacheable(
+        value = "runtimeConfigurations",
+        key = "#projectId + ':' + #environmentId"
+)
 public RuntimeConfigurationResponse getRuntimeConfiguration(
         Long projectId,
         Long environmentId,
@@ -225,6 +240,10 @@ public List<ConfigurationVersionResponse> getConfigurationVersions(
             .toList();
 }
         
+        @CacheEvict(
+        value = "runtimeConfigurations",
+        key = "#projectId + ':' + #environmentId"
+        )
         public Configuration rollbackConfiguration(
         Long projectId,
         Long environmentId,
