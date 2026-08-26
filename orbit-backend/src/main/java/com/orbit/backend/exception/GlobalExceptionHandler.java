@@ -3,7 +3,7 @@ package com.orbit.backend.exception;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import java.util.Map;
 
 @RestControllerAdvice
@@ -20,6 +20,17 @@ public class GlobalExceptionHandler {
         );
     }
 
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+@ResponseStatus(HttpStatus.BAD_REQUEST)
+public Map<String, String> handleValidationException(
+        MethodArgumentNotValidException exception
+) {
+    return Map.of(
+            "message",
+            "Validation failed"
+    );
+}
+
     @ExceptionHandler(DataIntegrityViolationException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
     public Map<String, String> handleDataIntegrityViolation(
@@ -32,4 +43,6 @@ public class GlobalExceptionHandler {
                 "A configuration with this key already exists in this environment"
         );
     }
+
+    
 }

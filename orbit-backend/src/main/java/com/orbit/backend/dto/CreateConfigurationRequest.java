@@ -1,9 +1,16 @@
 package com.orbit.backend.dto;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 public class CreateConfigurationRequest {
 
+    @NotBlank
+    @Size(max = 100)
     private String key;
+
+    @NotBlank
     private String value;
+
 
     public CreateConfigurationRequest() {
     }

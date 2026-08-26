@@ -3,7 +3,7 @@ package com.orbit.backend.repository;
 import com.orbit.backend.entity.Environment;
 import com.orbit.backend.entity.EnvironmentApiKey;
 import org.springframework.data.jpa.repository.JpaRepository;
-
+import java.util.List;
 import java.util.Optional;
 
 public interface EnvironmentApiKeyRepository
@@ -16,5 +16,9 @@ public interface EnvironmentApiKeyRepository
     Optional<EnvironmentApiKey> findByIdAndEnvironment(
             Long id,
             Environment environment
+    );
+
+    List<EnvironmentApiKey> findAllByEnvironmentOrderByCreatedAtDesc(
+        Environment environment
     );
 }

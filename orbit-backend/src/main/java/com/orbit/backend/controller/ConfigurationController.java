@@ -13,6 +13,7 @@ import com.orbit.backend.dto.RuntimeConfigurationResponse;
 import com.orbit.backend.dto.ConfigurationVersionResponse;
 import java.util.List;
 import com.orbit.backend.dto.RollbackConfigurationRequest;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping(
@@ -33,7 +34,7 @@ public class ConfigurationController {
     public ConfigurationResponse createConfiguration(
             @PathVariable Long projectId,
             @PathVariable Long environmentId,
-            @RequestBody CreateConfigurationRequest request,
+            @Valid @RequestBody CreateConfigurationRequest request,
             Authentication authentication
     ) {
         Configuration configuration =
@@ -68,7 +69,7 @@ public class ConfigurationController {
                 @PathVariable Long projectId,
                 @PathVariable Long environmentId,
                 @PathVariable Long configurationId,
-                @RequestBody UpdateConfigurationRequest request,
+                @Valid @RequestBody UpdateConfigurationRequest request,
                 Authentication authentication
         ) {
         Configuration configuration =

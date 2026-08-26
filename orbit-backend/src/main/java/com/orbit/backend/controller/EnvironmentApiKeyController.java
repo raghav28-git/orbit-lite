@@ -4,7 +4,9 @@ import com.orbit.backend.service.EnvironmentApiKeyService;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
-
+import com.orbit.backend.dto.EnvironmentApiKeyResponse;
+import com.orbit.backend.entity.EnvironmentApiKey;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -53,5 +55,22 @@ public void revokeApiKey(
             apiKeyId,
             authentication.getName()
     );
+}
+
+@GetMapping
+public List<EnvironmentApiKeyResponse> getApiKeys(
+        @PathVariable Long projectId,
+        @PathVariable Long environmentId,
+        Authentication authentication
+) {
+    return apiKeyService
+            .getApiKeys(
+                    projectId,
+                    environmentId,
+                    authentication.getName()
+            )
+            .stream()
+            .map(EnvironmentApiKeyResponse::from)
+            .toList();
 }
 }

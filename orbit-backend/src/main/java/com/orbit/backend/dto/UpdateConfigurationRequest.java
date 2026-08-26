@@ -1,7 +1,9 @@
 package com.orbit.backend.dto;
+import jakarta.validation.constraints.NotBlank;
 
 public class UpdateConfigurationRequest {
 
+    @NotBlank
     private String value;
 
     public UpdateConfigurationRequest() {

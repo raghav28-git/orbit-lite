@@ -16,6 +16,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.time.LocalDateTime;
 import java.util.Base64;
+import java.util.List;
 
 @Service
 public class EnvironmentApiKeyService {
@@ -176,5 +177,32 @@ public EnvironmentApiKeyService(
         apiKey.getId(),
         "Revoked environment API key"
 );
+}
+
+public List<EnvironmentApiKey> getApiKeys(
+        Long projectId,
+        Long environmentId,
+        String userEmail
+) {
+    User owner = userRepository
+            .findByEmail(userEmail)
+            .orElseThrow(() ->
+                    new IllegalArgumentException("User not found")
+            );
+
+    Project project = projectRepository
+            .findByIdAndOwner(projectId, owner)
+            .orElseThrow(() ->
+                    new IllegalArgumentException("Project not found")
+            );
+
+    Environment environment = environmentRepository
+            .findByIdAndProject(environmentId, project)
+            .orElseThrow(() ->
+                    new IllegalArgumentException("Environment not found")
+            );
+
+    return apiKeyRepository
+            .findAllByEnvironmentOrderByCreatedAtDesc(environment);
 }
 }

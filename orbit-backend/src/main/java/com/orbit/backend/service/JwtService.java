@@ -52,14 +52,14 @@ public class JwtService {
                 .get("userId", Long.class);
     }
 
-    public boolean isTokenValid(String token) {
-        try {
-            extractAllClaims(token);
-            return true;
-        } catch (Exception exception) {
-            return false;
-        }
+public boolean isTokenValid(String token) {
+    try {
+        extractAllClaims(token);
+        return true;
+    } catch (Exception exception) {
+        return false;
     }
+}
 
     private <T> T extractClaim(
             String token,
