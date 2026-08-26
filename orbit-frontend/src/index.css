@@ -1,0 +1,415 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f4f6f8;
+}
+
+.login-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.login-card {
+  width: 380px;
+  padding: 32px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+}
+
+.login-card h1 {
+  margin: 0 0 8px;
+}
+
+.login-card p {
+  margin: 0 0 24px;
+  color: #666;
+}
+
+.login-card form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.login-card label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 600;
+}
+
+.login-card input {
+  width: 100%;
+  padding: 11px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+.login-card button {
+  padding: 12px;
+  border: none;
+  border-radius: 6px;
+  background: #111827;
+  color: white;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+.dashboard-page {
+  min-height: 100vh;
+  background: #f6f7f9;
+}
+
+.topbar {
+  height: 64px;
+  padding: 0 32px;
+  background: #111827;
+  color: white;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.topbar h1 {
+  display: inline;
+  margin: 0;
+  font-size: 22px;
+}
+
+.topbar span {
+  margin-left: 6px;
+  color: #9ca3af;
+}
+
+.topbar button {
+  padding: 8px 16px;
+  border: 1px solid #374151;
+  border-radius: 6px;
+  background: transparent;
+  color: white;
+  cursor: pointer;
+}
+
+.dashboard-content {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 40px 24px;
+}
+
+.page-heading {
+  margin-bottom: 28px;
+}
+
+.page-heading h2 {
+  margin: 0 0 6px;
+  font-size: 28px;
+}
+
+.page-heading p {
+  margin: 0;
+  color: #6b7280;
+}
+
+.project-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+.project-card {
+  padding: 24px;
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.project-card:hover {
+  border-color: #9ca3af;
+}
+
+.project-card h3 {
+  margin: 0 0 8px;
+}
+
+.project-card p {
+  color: #6b7280;
+  margin-bottom: 20px;
+}
+
+.project-card span {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.back-button {
+  border: none;
+  background: transparent;
+  padding: 0;
+  margin-bottom: 24px;
+  color: #374151;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.environment-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 20px;
+}
+
+.environment-actions button {
+  padding: 8px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  background: white;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.environment-actions button:hover {
+  background: #f3f4f6;
+}
+
+.configuration-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.configuration-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 18px 20px;
+
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+
+  cursor: pointer;
+}
+
+.configuration-card:hover {
+  border-color: #9ca3af;
+}
+
+.configuration-card h3 {
+  margin: 0 0 6px;
+  font-size: 16px;
+}
+
+.configuration-value {
+  margin: 0;
+  color: #6b7280;
+  font-family: monospace;
+}
+
+.configuration-arrow {
+  color: #6b7280;
+  font-size: 20px;
+}
+
+.configuration-editor {
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 24px;
+  margin-bottom: 32px;
+}
+
+.configuration-editor h3 {
+  margin-top: 0;
+}
+
+.configuration-input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-family: monospace;
+  font-size: 15px;
+  margin-bottom: 14px;
+}
+
+.primary-button {
+  padding: 10px 16px;
+  border: none;
+  border-radius: 6px;
+  background: #111827;
+  color: white;
+  cursor: pointer;
+}
+
+.primary-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.version-section {
+  margin-top: 32px;
+}
+
+.version-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.version-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 18px 20px;
+
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+}
+
+.version-card h3 {
+  margin: 0 0 8px;
+}
+
+.version-card p {
+  margin: 0 0 6px;
+  color: #4b5563;
+}
+
+.version-card small {
+  color: #6b7280;
+}
+
+.version-card button {
+  padding: 8px 14px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  background: white;
+  cursor: pointer;
+}
+
+.version-card button:hover {
+  background: #f3f4f6;
+}
+
+.api-key-warning {
+  margin-top: 20px;
+  margin-bottom: 28px;
+  padding: 20px;
+  background: #fff7ed;
+  border: 1px solid #fed7aa;
+  border-radius: 10px;
+}
+
+.api-key-warning h3 {
+  margin-top: 0;
+}
+
+.api-key-value {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 14px;
+}
+
+.api-key-value code {
+  flex: 1;
+  padding: 10px;
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  overflow-wrap: anywhere;
+  font-size: 13px;
+}
+
+.api-key-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 28px;
+}
+
+.api-key-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px;
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+}
+
+.api-key-card h3 {
+  margin: 0 0 8px;
+}
+
+.api-key-card p {
+  margin: 8px 0 0;
+  color: #6b7280;
+  font-size: 13px;
+}
+
+.status-active,
+.status-revoked {
+  display: inline-block;
+  padding: 4px 9px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.status-active {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.status-revoked {
+  background: #f3f4f6;
+  color: #6b7280;
+}
+
+.audit-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.audit-card {
+  padding: 18px 20px;
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+}
+
+.audit-main {
+  margin-bottom: 12px;
+}
+
+.audit-action {
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.audit-main p {
+  margin: 6px 0 0;
+  color: #4b5563;
+}
+
+.audit-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  color: #6b7280;
+  font-size: 12px;
+}
