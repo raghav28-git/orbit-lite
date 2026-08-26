@@ -44,5 +44,15 @@ public Map<String, String> handleValidationException(
         );
     }
 
+        @ExceptionHandler(ResourceNotFoundException.class)
+        @ResponseStatus(HttpStatus.NOT_FOUND)
+        public Map<String, String> handleResourceNotFoundException(
+                ResourceNotFoundException exception
+        ) {
+        return Map.of(
+                "message",
+                exception.getMessage()
+        );
+        }
     
 }

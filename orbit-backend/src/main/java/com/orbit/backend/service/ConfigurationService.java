@@ -23,7 +23,7 @@ import com.orbit.backend.dto.ConfigurationVersionResponse;
 import com.orbit.backend.dto.RollbackConfigurationRequest;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.CacheEvict;
-
+import com.orbit.backend.exception.ResourceNotFoundException;
 
 @Service
 public class ConfigurationService {
@@ -66,14 +66,14 @@ public ConfigurationService(
         Project project = projectRepository
                 .findByIdAndOwner(projectId, owner)
                 .orElseThrow(() ->
-                        new IllegalArgumentException("Project not found")
-                );
+        new ResourceNotFoundException("Project not found")
+);
 
         Environment environment = environmentRepository
                 .findByIdAndProject(environmentId, project)
-                .orElseThrow(() ->
-                        new IllegalArgumentException("Environment not found")
-                );
+.orElseThrow(() ->
+        new ResourceNotFoundException("Environment not found")
+);
 
         Configuration configuration = new Configuration(
                 request.getKey(),
@@ -107,15 +107,15 @@ return savedConfiguration;
 
         Project project = projectRepository
                 .findByIdAndOwner(projectId, owner)
-                .orElseThrow(() ->
-                        new IllegalArgumentException("Project not found")
-                );
+.orElseThrow(() ->
+        new ResourceNotFoundException("Project not found")
+);
 
         Environment environment = environmentRepository
                 .findByIdAndProject(environmentId, project)
                 .orElseThrow(() ->
-                        new IllegalArgumentException("Environment not found")
-                );
+        new ResourceNotFoundException("Environment not found")
+);
 
         return configurationRepository
                 .findAllByEnvironment(environment);
@@ -124,8 +124,8 @@ return savedConfiguration;
     private User getUser(String userEmail) {
         return userRepository.findByEmail(userEmail)
                 .orElseThrow(() ->
-                        new IllegalArgumentException("User not found")
-                );
+        new ResourceNotFoundException("User not found")
+);
     }
 
     @CacheEvict(
@@ -143,21 +143,21 @@ return savedConfiguration;
 
     Project project = projectRepository
             .findByIdAndOwner(projectId, owner)
-            .orElseThrow(() ->
-                    new IllegalArgumentException("Project not found")
-            );
+.orElseThrow(() ->
+        new ResourceNotFoundException("Project not found")
+);
 
     Environment environment = environmentRepository
             .findByIdAndProject(environmentId, project)
             .orElseThrow(() ->
-                    new IllegalArgumentException("Environment not found")
-            );
+        new ResourceNotFoundException("Environment not found")
+);
 
     Configuration configuration = configurationRepository
             .findByIdAndEnvironment(configurationId, environment)
             .orElseThrow(() ->
-                    new IllegalArgumentException("Configuration not found")
-            );
+        new ResourceNotFoundException("Configuration not found")
+);
 
     Optional<ConfigurationVersion> latestVersion =
         configurationVersionRepository
@@ -210,15 +210,15 @@ public RuntimeConfigurationResponse getRuntimeConfiguration(
 
     Project project = projectRepository
             .findByIdAndOwner(projectId, owner)
-            .orElseThrow(() ->
-                    new IllegalArgumentException("Project not found")
-            );
+.orElseThrow(() ->
+        new ResourceNotFoundException("Project not found")
+);
 
     Environment environment = environmentRepository
             .findByIdAndProject(environmentId, project)
             .orElseThrow(() ->
-                    new IllegalArgumentException("Environment not found")
-            );
+        new ResourceNotFoundException("Environment not found")
+);
 
     Map<String, String> configurations =
             configurationRepository
@@ -244,21 +244,21 @@ public List<ConfigurationVersionResponse> getConfigurationVersions(
 
     Project project = projectRepository
             .findByIdAndOwner(projectId, owner)
-            .orElseThrow(() ->
-                    new IllegalArgumentException("Project not found")
-            );
+.orElseThrow(() ->
+        new ResourceNotFoundException("Project not found")
+);
 
     Environment environment = environmentRepository
             .findByIdAndProject(environmentId, project)
             .orElseThrow(() ->
-                    new IllegalArgumentException("Environment not found")
-            );
+        new ResourceNotFoundException("Environment not found")
+);
 
     Configuration configuration = configurationRepository
             .findByIdAndEnvironment(configurationId, environment)
             .orElseThrow(() ->
-                    new IllegalArgumentException("Configuration not found")
-            );
+        new ResourceNotFoundException("Configuration not found")
+);
 
     return configurationVersionRepository
             .findAllByConfigurationOrderByVersionAsc(configuration)
@@ -286,21 +286,21 @@ public List<ConfigurationVersionResponse> getConfigurationVersions(
 
     Project project = projectRepository
             .findByIdAndOwner(projectId, owner)
-            .orElseThrow(() ->
-                    new IllegalArgumentException("Project not found")
-            );
+.orElseThrow(() ->
+        new ResourceNotFoundException("Project not found")
+);
 
     Environment environment = environmentRepository
             .findByIdAndProject(environmentId, project)
             .orElseThrow(() ->
-                    new IllegalArgumentException("Environment not found")
-            );
+        new ResourceNotFoundException("Environment not found")
+);
 
     Configuration configuration = configurationRepository
             .findByIdAndEnvironment(configurationId, environment)
             .orElseThrow(() ->
-                    new IllegalArgumentException("Configuration not found")
-            );
+        new ResourceNotFoundException("Configuration not found")
+);
 
     ConfigurationVersion targetVersion =
             configurationVersionRepository

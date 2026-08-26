@@ -16,6 +16,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.time.LocalDateTime;
 import java.util.Base64;
+import com.orbit.backend.exception.ResourceNotFoundException;
 import java.util.List;
 
 @Service
@@ -153,9 +154,9 @@ public EnvironmentApiKeyService(
             apiKeyRepository
                     .findByIdAndEnvironment(apiKeyId, environment)
                     .orElseThrow(() ->
-                            new IllegalArgumentException(
-                                    "API key not found"
-                            )
+                            new ResourceNotFoundException(
+        "API key not found"
+)
                     );
 
     if (!apiKey.isActive()) {
