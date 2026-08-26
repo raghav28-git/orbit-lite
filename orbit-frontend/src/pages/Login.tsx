@@ -21,7 +21,6 @@ function Login() {
 
       localStorage.setItem("orbit_token", token);
 
-      console.log("Login successful");
 
       navigate("/dashboard");
     } catch (error) {
